@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIxGame — Next-Gen Browser Gaming Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" type="png/img" href="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=160&q=80">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#08080a',
+            surface: '#111116',
+            panel: '#181820',
+            flame: '#ff5500',
+            solar: '#ff9500'
+          },
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            sans: ['Montserrat', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-void text-white selection:bg-flame selection:text-black">
+
+  <div id="scroll-bar" class="fixed top-0 left-0 z-50 h-1 bg-gradient-to-r from-flame via-solar to-white w-0 transition-all duration-75"></div>
+
+  <div id="splash" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-void px-4 overflow-hidden select-none">
+    <div class="absolute inset-0 grid-bg opacity-70"></div>
+    <div class="glow-orb absolute w-[480px] h-[480px] rounded-full bg-flame/35 blur-[130px] pointer-events-none"></div>
+
+    <div class="relative z-10 mb-2 rounded-full border border-flame/50 bg-flame/15 px-4 py-1 text-xs font-extrabold tracking-widest text-solar uppercase">
+      GAMEPAD INTRO // НАЖМИ НА ДЖОЙСТИК
+    </div>
+
+    <h1 class="relative z-10 text-4xl sm:text-6xl md:text-7xl text-3d tracking-wider text-center">
+      PIx<span class="text-3d-fire">Game</span>
+    </h1>
+
+    <p id="pad-status" class="relative z-10 mt-2 text-xs sm:text-sm font-bold tracking-widest text-gray-300 uppercase h-5">
+      Кликни по джойстику или нажми ENTER PIXGAME
+    </p>
+
+    <div id="pad-stage" class="relative z-10 my-5 w-full max-w-[520px] sm:max-w-[600px] float-3d cursor-pointer">
+      <div class="relative overflow-hidden rounded-3xl border-2 border-flame/60 bg-[#0d0d12] shadow-[0_28px_55px_rgba(255,85,0,0.55)]">
+        <img
+          src="https://images.unsplash.com/photo-1592840496694-26d035b52b48?auto=format&fit=crop&w=1100&q=85"
+          onerror="this.onerror=null;this.src='https://placehold.co/1100x620/121218/ff5500?text=PIxGame+Pro+Controller';"
+          alt="PIxGame Controller"
+          class="w-full h-64 sm:h-80 object-cover brightness-95 contrast-110"
+        />
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/80 via-transparent to-flame/15"></div>
+      </div>
+    </div>
+
+    <div class="relative z-10 mt-2 flex items-center justify-center">
+      <button id="enter-btn" class="rounded-2xl bg-gradient-to-r from-flame to-solar px-9 py-4 font-display text-sm sm:text-lg font-black uppercase tracking-wider text-black shadow-[0_0_35px_rgba(255,85,0,0.75)] transition-transform hover:scale-105 active:scale-95">
+        ENTER PIXGAME →
+      </button>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 border-b border-flame/25 bg-void/85 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="#home" class="flex items-center gap-3 group">
+        <img
+          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=160&q=80"
+          onerror="this.onerror=null;this.src='https://placehold.co/96x96/181820/ff5500?text=PX';"
+          alt="PIxGame Logo"
+          class="h-11 w-11 rounded-xl object-cover border border-flame/60 shadow-lg shadow-flame/40 transition-transform group-hover:rotate-12"
+        />
+        <div>
+          <span class="font-display text-xl font-black tracking-wider text-white">PIx<span class="text-flame">Game</span></span>
+          <span class="block text-[10px] font-bold tracking-[0.22em] text-gray-400 uppercase">Yandex Games Portal</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 font-display text-xs font-bold tracking-widest uppercase">
+        <a href="#home" class="text-gray-200 hover:text-flame transition">Home</a>
+        <a href="#about" class="text-gray-200 hover:text-flame transition">About</a>
+        <a href="#top-games" class="text-gray-200 hover:text-flame transition">Top 3</a>
+        <a href="#catalog" class="text-gray-200 hover:text-flame transition">Catalog (30)</a>
+        <a href="#bug-report" class="rounded-xl border border-flame/60 bg-flame/15 px-4 py-2 text-solar hover:bg-flame hover:text-black transition">
+          Bug Report
+        </a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="open-pad-btn" class="rounded-xl border border-white/15 bg-panel px-3.5 py-2 font-display text-xs font-bold text-solar hover:border-flame transition">
+          GAMEPAD
+        </button>
+        <a href="#catalog" class="hidden sm:inline-block rounded-xl bg-gradient-to-r from-flame to-solar px-4 py-2 font-display text-xs font-black text-black hover:scale-105 transition">
+          PLAY NOW
+        </a>
+        <button id="menu-toggle" class="md:hidden rounded-xl border border-flame/40 bg-panel px-3 py-2 font-display text-xs font-black text-flame">
+          MENU
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-nav" class="hidden md:hidden border-t border-flame/20 bg-surface px-4 py-4 space-y-3 font-display text-xs font-bold uppercase">
+      <a href="#home" class="block py-1 text-gray-200 hover:text-flame">Home</a>
+      <a href="#about" class="block py-1 text-gray-200 hover:text-flame">About</a>
+      <a href="#top-games" class="block py-1 text-gray-200 hover:text-flame">Top 3 Games</a>
+      <a href="#catalog" class="block py-1 text-gray-200 hover:text-flame">Catalog (30 Games)</a>
+      <a href="#bug-report" class="block py-1 text-solar">If You Saw a Bug</a>
+    </div>
+  </header>
+
+  <section id="home" class="relative min-h-[92vh] flex items-center overflow-hidden py-16 sm:py-24">
+    <div class="absolute inset-0 grid-bg"></div>
+    <div class="glow-orb absolute -top-20 -left-20 h-96 w-96 rounded-full bg-flame/30 blur-[140px]"></div>
+    <div class="glow-orb absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-solar/20 blur-[150px]"></div>
+
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 text-center lg:text-left reveal-left">
+          <div class="inline-flex items-center gap-2 rounded-full border border-flame/45 bg-flame/10 px-4 py-1.5 text-xs font-extrabold tracking-widest text-solar uppercase mb-6">
+            <span class="h-2 w-2 rounded-full bg-flame animate-ping"></span>
+            <span>INSTANT PLAY • 30+ BROWSER GAMES</span>
+          </div>
+
+          <h1 id="hero-3d-title" class="text-4xl sm:text-6xl md:text-7xl xl:text-[82px] leading-[1.03] text-3d mb-6 transition-transform duration-150">
+            PIXGAME <br />
+            <span class="text-3d-fire">PLAY BEYOND LIMITS</span>
+          </h1>
+
+          <p class="mx-auto lg:mx-0 max-w-2xl text-base sm:text-lg text-gray-300 font-medium leading-relaxed mb-9">
+            Твой главный черно-оранжевый портал браузерных хитов. Выбирай любую из <span class="text-white font-bold">30 крутых игр</span> и запускай её в один клик напрямую на <span class="text-flame font-bold">Яндекс Играх</span> без скачивания!
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <a href="#catalog" class="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-flame to-solar px-8 py-4 text-center font-display text-sm sm:text-base font-black uppercase tracking-wider text-black shadow-[0_10px_30px_rgba(255,85,0,0.5)] transition-transform hover:scale-105">
+              ИГРАТЬ СЕЙЧАС (30)
+            </a>
+            <a href="#top-games" class="w-full sm:w-auto rounded-2xl border-2 border-flame/60 bg-panel/80 px-8 py-4 text-center font-display text-sm sm:text-base font-bold uppercase tracking-wider text-white hover:bg-flame/15 transition">
+              ТОП 3 ХИТА
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex justify-center reveal-right">
+          <div class="relative w-full max-w-md rounded-3xl border-2 border-flame/50 bg-gradient-to-b from-[#1A1A24] to-[#0B0B10] p-6 shadow-[0_25px_70px_rgba(255,85,0,0.38)] float-3d">
+            <div class="flex items-center justify-between mb-4">
+              <span class="rounded-lg bg-flame px-3 py-1 font-display text-xs font-black text-black uppercase">PIXGAME HUB</span>
+              <span class="font-display text-xs font-bold text-solar">INSTANT PLAY</span>
+            </div>
+
+            <div class="relative overflow-hidden rounded-2xl border border-flame/40 mb-5">
+              <img
+                src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80"
+                onerror="this.onerror=null;this.src='https://placehold.co/900x520/14141c/ff5500?text=PIxGame+Arena';"
+                alt="PIxGame Arena Showcase"
+                class="w-full h-56 object-cover"
+              />
+              <span class="absolute bottom-3 left-3 rounded-lg bg-void/85 border border-flame/50 px-3 py-1 font-display text-[11px] font-black text-solar">0 MB DOWNLOAD</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 text-center">
+              <div class="rounded-xl bg-void/90 border border-white/10 p-3">
+                <div class="font-display text-lg font-black text-flame">30+</div>
+                <div class="text-[11px] text-gray-400 font-bold">Games</div>
+              </div>
+              <div class="rounded-xl bg-void/90 border border-white/10 p-3">
+                <div class="font-display text-lg font-black text-solar">0 MB</div>
+                <div class="text-[11px] text-gray-400 font-bold">Download</div>
+              </div>
+              <div class="rounded-xl bg-void/90 border border-white/10 p-3">
+                <div class="font-display text-lg font-black text-white">FAST</div>
+                <div class="text-[11px] text-gray-400 font-bold">Instant</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="relative py-20 sm:py-28 border-t border-flame/20 bg-surface/60">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+        <div class="lg:col-span-5 reveal-left">
+          <div class="relative overflow-hidden rounded-3xl border-2 border-flame/45 shadow-[0_20px_50px_rgba(255,85,0,0.3)]">
+            <img
+              src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=900&q=80"
+              onerror="this.onerror=null;this.src='https://placehold.co/900x600/14141c/ff5500?text=PIxGame+Setup';"
+              alt="Gaming Setup"
+              class="w-full h-80 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-void/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-4 font-display text-xs font-black tracking-widest text-solar uppercase">NEXT-GEN BROWSER ENGINE</div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 reveal-right">
+          <span class="font-display text-xs font-black tracking-[0.3em] text-flame uppercase">ABOUT PIXGAME</span>
+          <h2 class="mt-2 text-3xl sm:text-5xl md:text-6xl text-3d">О ПЛАТФОРМЕ PIXGAME</h2>
+          <p class="mt-5 text-gray-300 text-base sm:text-lg leading-relaxed">
+            <strong class="text-solar">PIxGame</strong> объединяет лучшие браузерные мини-игры в одном стильном пространстве. Нажимай на карточку любой игры, и она моментально откроется на официальной платформе <span class="text-flame font-bold">Яндекс Игры</span>.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="reveal-up game-card rounded-3xl p-8">
+          <img
+            src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80"
+            onerror="this.onerror=null;this.src='https://placehold.co/400x240/181820/ff5500?text=Instant+Launch';"
+            alt="Instant Launch"
+            class="w-full h-36 object-cover rounded-2xl mb-5 border border-flame/40"
+          />
+          <h3 class="font-display text-xl font-black text-white uppercase mb-3">Instant Yandex Games Launch</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Прямой переход в официальный каталог Яндекс Игры за один клик с автоматическим сохранением прогресса.
+          </p>
+        </div>
+
+        <div class="reveal-up game-card rounded-3xl p-8" style="transition-delay: 120ms;">
+          <img
+            src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=400&q=80"
+            onerror="this.onerror=null;this.src='https://placehold.co/400x240/181820/ff5500?text=Zero+Lag';"
+            alt="Zero Lag Engine"
+            class="w-full h-36 object-cover rounded-2xl mb-5 border border-flame/40"
+          />
+          <h3 class="font-display text-xl font-black text-white uppercase mb-3">Zero Lag Browser Engine</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Никаких тяжелых установок и лагов — запускай любимые экшены и шутеры мгновенно на ПК и смартфоне.
+          </p>
+        </div>
+
+        <div class="reveal-up game-card rounded-3xl p-8" style="transition-delay: 240ms;">
+          <img
+            src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=400&q=80"
+            onerror="this.onerror=null;this.src='https://placehold.co/400x240/181820/ff5500?text=30+Hits';"
+            alt="Curated 30+ Hits"
+            class="w-full h-36 object-cover rounded-2xl mb-5 border border-flame/40"
+          />
+          <h3 class="font-display text-xl font-black text-white uppercase mb-3">Curated 30+ Hits</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Тщательно отобранные 30 лучших игр в 5 популярных жанрах: Шутеры, Аркады, Гонки, Экшен и Головоломки.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="top-games" class="relative py-20 sm:py-28 border-t border-flame/20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="reveal-up text-center mb-16">
+        <span class="font-display text-xs font-black tracking-[0.3em] text-solar uppercase">BEST OF THE WEEK</span>
+        <h2 class="mt-2 text-3xl sm:text-5xl md:text-6xl text-3d">TOP 3 GAMES</h2>
+      </div>
+
+      <div id="top-games-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8"></div>
+    </div>
+  </section>
+
+  <section id="catalog" class="relative py-20 sm:py-28 border-t border-flame/20 bg-surface/50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="reveal-up text-center mb-12">
+        <span class="font-display text-xs font-black tracking-[0.3em] text-flame uppercase">30 MINI-GAMES COLLECTION</span>
+        <h2 class="mt-2 text-3xl sm:text-5xl md:text-6xl text-3d">КАТАЛОГ ИГР</h2>
+        <p class="mt-4 text-gray-300 text-sm sm:text-base max-w-2xl mx-auto">
+          Выбирай категорию или вводи название. Клик по карточке откроет игру в <span class="text-solar font-bold">Яндекс Играх</span>!
+        </p>
+      </div>
+
+      <div class="reveal-up mb-10 flex flex-col lg:flex-row items-center justify-between gap-4 rounded-3xl border border-flame/30 bg-void/90 p-4 sm:p-5">
+        <div id="filters" class="flex flex-wrap items-center justify-center gap-2">
+          <button data-cat="all" class="cat-btn rounded-xl bg-gradient-to-r from-flame to-solar px-4 py-2.5 font-display text-xs font-black uppercase text-black transition">
+            All (30)
+          </button>
+          <button data-cat="shooter" class="cat-btn rounded-xl border border-white/15 bg-panel px-4 py-2.5 font-display text-xs font-bold uppercase text-gray-200 hover:border-flame transition">
+            Shooter (6)
+          </button>
+          <button data-cat="arcade" class="cat-btn rounded-xl border border-white/15 bg-panel px-4 py-2.5 font-display text-xs font-bold uppercase text-gray-200 hover:border-flame transition">
+            Arcade (6)
+          </button>
+          <button data-cat="racing" class="cat-btn rounded-xl border border-white/15 bg-panel px-4 py-2.5 font-display text-xs font-bold uppercase text-gray-200 hover:border-flame transition">
+            Racing (6)
+          </button>
+          <button data-cat="action" class="cat-btn rounded-xl border border-white/15 bg-panel px-4 py-2.5 font-display text-xs font-bold uppercase text-gray-200 hover:border-flame transition">
+            Action (6)
+          </button>
+          <button data-cat="puzzle" class="cat-btn rounded-xl border border-white/15 bg-panel px-4 py-2.5 font-display text-xs font-bold uppercase text-gray-200 hover:border-flame transition">
+            Puzzle (6)
+          </button>
+        </div>
+
+        <input id="search-input" type="text" placeholder="Поиск среди 30 игр..." class="w-full lg:w-72 rounded-xl border border-white/15 bg-panel px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:border-flame focus:outline-none" />
+      </div>
+
+      <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5"></div>
+
+      <div id="empty-state" class="hidden py-12 text-center font-display text-lg font-bold text-gray-400">
+        Игры не найдены. Попробуйте другой запрос.
+      </div>
+    </div>
+  </section>
+
+  <section id="bug-report" class="relative py-20 sm:py-28 border-t border-flame/20">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6">
+      <div class="reveal-up rounded-3xl border-2 border-flame/50 bg-gradient-to-b from-[#181822] to-[#0B0B10] p-6 sm:p-12 shadow-[0_20px_60px_rgba(255,85,0,0.25)]">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl sm:text-4xl md:text-5xl text-3d">
+            IF YOU SAW A BUG PLEASE CONTACT
+          </h2>
+          <p class="mt-3 text-gray-300 text-sm sm:text-base max-w-xl mx-auto">
+            Нашли ошибку на сайте PIxGame или не открывается игра? Напишите нам, и мы всё исправим!
+          </p>
+        </div>
+
+        <form id="bug-form" class="space-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-display text-xs font-bold uppercase tracking-wider text-solar mb-2">Nickname</label>
+              <input type="text" required placeholder="PIxPlayer_01" class="w-full rounded-xl border border-white/15 bg-void px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-flame focus:outline-none" />
+            </div>
+            <div>
+              <label class="block font-display text-xs font-bold uppercase tracking-wider text-solar mb-2">Game Name</label>
+              <input type="text" required placeholder="Standoff Strike 3D" class="w-full rounded-xl border border-white/15 bg-void px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-flame focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-display text-xs font-bold uppercase tracking-wider text-solar mb-2">Bug Description</label>
+            <textarea rows="4" required placeholder="Опишите проблему подробно..." class="w-full rounded-xl border border-white/15 bg-void px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-flame focus:outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-flame to-solar py-4 font-display text-sm sm:text-base font-black uppercase tracking-wider text-black shadow-lg shadow-flame/30 transition-transform hover:scale-[1.01] active:scale-95">
+            SUBMIT BUG REPORT
+          </button>
+        </form>
+
+        <div id="bug-toast" class="hidden mt-6 rounded-2xl border border-emerald-500/50 bg-emerald-500/15 p-5 text-center">
+          <h4 class="font-display text-base font-black text-white uppercase">REPORT SENT SUCCESSFULLY</h4>
+          <p class="text-xs sm:text-sm text-gray-300 mt-1">Команда PIxGame получила ваш отчет и уже приступила к проверке.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative overflow-hidden border-t-2 border-flame/40 bg-[#050507] pt-16 pb-10">
+    <div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
+
+      <div class="reveal-up mb-16 rounded-3xl border-2 border-flame/60 bg-gradient-to-r from-[#1c100a] via-[#15151e] to-[#1c100a] p-8 sm:p-12 shadow-[0_20px_60px_rgba(255,85,0,0.3)] flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="text-center lg:text-left">
+          <span class="inline-block rounded-full bg-flame/20 border border-flame/50 px-3 py-1 font-display text-[11px] font-black tracking-widest text-solar uppercase mb-3">
+            INSTANT ACCESS • YANDEX GAMES
+          </span>
+          <h3 class="text-2xl sm:text-4xl md:text-5xl text-3d">
+            READY TO DOMINATE THE LEADERBOARD?
+          </h3>
+          <p class="mt-3 text-sm sm:text-base text-gray-300 max-w-2xl">
+            Выбирай любую из 30 топовых браузерных игр прямо сейчас и ставь новые рекорды без скачивания и регистрации.
+          </p>
+        </div>
+        <a href="#catalog" class="shrink-0 rounded-2xl bg-gradient-to-r from-flame to-solar px-9 py-5 font-display text-sm sm:text-base font-black uppercase tracking-wider text-black shadow-[0_0_35px_rgba(255,85,0,0.65)] transition-transform hover:scale-105">
+          LAUNCH GAMES NOW →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-14 border-b border-white/10">
+
+        <div>
+          <a href="#home" class="flex items-center gap-3 mb-5">
+            <img
+              src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=160&q=80"
+              onerror="this.onerror=null;this.src='https://placehold.co/96x96/181820/ff5500?text=PX';"
+              alt="PIxGame Brand"
+              class="h-12 w-12 rounded-xl object-cover border border-flame/60"
+            />
+            <div>
+              <span class="font-display text-2xl font-black tracking-wider text-white">PIx<span class="text-flame">Game</span></span>
+              <span class="block text-[10px] font-bold tracking-[0.22em] text-solar uppercase">Gaming Portal</span>
+            </div>
+          </a>
+          <p class="text-sm text-gray-400 leading-relaxed mb-5">
+            Современный игровой хаб в черно-оранжевой неоновой эстетике. Мгновенный запуск лучших мини-игр на платформе Яндекс Игры.
+          </p>
+          <div class="inline-flex items-center gap-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 mb-5">
+            <span class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="font-display text-xs font-bold text-emerald-300 uppercase">All Servers Online</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="https://yandex.ru/games/" target="_blank" rel="noopener noreferrer" class="group overflow-hidden rounded-xl border border-white/15 hover:border-flame transition">
+              <img
+                src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&w=120&q=80"
+                onerror="this.onerror=null;this.src='https://placehold.co/44x44/181820/ff5500?text=DC';"
+                alt="Discord Community"
+                class="h-10 w-10 object-cover group-hover:scale-110 transition"
+              />
+            </a>
+            <a href="https://yandex.ru/games/" target="_blank" rel="noopener noreferrer" class="group overflow-hidden rounded-xl border border-white/15 hover:border-flame transition">
+              <img
+                src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=120&q=80"
+                onerror="this.onerror=null;this.src='https://placehold.co/44x44/181820/ff5500?text=YT';"
+                alt="YouTube Channel"
+                class="h-10 w-10 object-cover group-hover:scale-110 transition"
+              />
+            </a>
+            <a href="https://yandex.ru/games/" target="_blank" rel="noopener noreferrer" class="group overflow-hidden rounded-xl border border-white/15 hover:border-flame transition">
+              <img
+                src="https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&w=120&q=80"
+                onerror="this.onerror=null;this.src='https://placehold.co/44x44/181820/ff5500?text=TG';"
+                alt="Telegram News"
+                class="h-10 w-10 object-cover group-hover:scale-110 transition"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display text-sm font-black uppercase tracking-widest text-white mb-5">Navigation</h4>
+          <ul class="space-y-3 text-sm font-medium text-gray-400">
+            <li><a href="#home" class="hover:text-flame transition">→ Home Arena</a></li>
+            <li><a href="#about" class="hover:text-flame transition">→ About PIxGame</a></li>
+            <li><a href="#top-games" class="hover:text-flame transition">→ Top 3 Featured Games</a></li>
+            <li><a href="#catalog" class="hover:text-flame transition">→ Full 30 Games Catalog</a></li>
+            <li><a href="#bug-report" class="hover:text-flame transition">→ Report a Bug</a></li>
+            <li><a href="https://yandex.ru/games/" target="_blank" rel="noopener noreferrer" class="text-solar hover:text-flame transition">→ Official Yandex Games ↗</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display text-sm font-black uppercase tracking-widest text-white mb-5">Game Categories</h4>
+          <ul class="space-y-3 text-sm font-medium text-gray-400">
+            <li><a href="#catalog" data-footer-cat="shooter" class="footer-cat-link hover:text-flame transition">• Shooter Games (6)</a></li>
+            <li><a href="#catalog" data-footer-cat="arcade" class="footer-cat-link hover:text-flame transition">• Arcade Classics (6)</a></li>
+            <li><a href="#catalog" data-footer-cat="racing" class="footer-cat-link hover:text-flame transition">• Racing & Drift 3D (6)</a></li>
+            <li><a href="#catalog" data-footer-cat="action" class="footer-cat-link hover:text-flame transition">• Action & Battles (6)</a></li>
+            <li><a href="#catalog" data-footer-cat="puzzle" class="footer-cat-link hover:text-flame transition">• Brain & Puzzle (6)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display text-sm font-black uppercase tracking-widest text-white mb-5">Newsletter & Specs</h4>
+          <p class="text-xs text-gray-400 leading-relaxed mb-4">
+            Подпишись на новые подборки игр недели и обновления портала PIxGame.
+          </p>
+          <form id="newsletter-form" class="flex gap-2 mb-5">
+            <input type="email" required placeholder="your@email.com" class="w-full rounded-xl border border-white/15 bg-panel px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:border-flame focus:outline-none" />
+            <button type="submit" class="rounded-xl bg-flame px-4 py-2.5 font-display text-xs font-black text-black hover:bg-solar transition">
+              JOIN
+            </button>
+          </form>
+          <p id="newsletter-msg" class="hidden text-xs font-bold text-emerald-400 mb-4">Вы подписаны на рассылку PIxGame!</p>
+          <div class="rounded-2xl border border-white/10 bg-panel/70 p-4 space-y-2 text-xs text-gray-400">
+            <div class="flex justify-between"><span>Engine:</span><span class="font-bold text-white">WebGL / HTML5</span></div>
+            <div class="flex justify-between"><span>Platform:</span><span class="font-bold text-solar">PC, iOS, Android</span></div>
+            <div class="flex justify-between"><span>Support:</span><span class="font-bold text-white">support@pixgame.ru</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="py-8 text-center select-none overflow-hidden">
+        <div class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-3d tracking-[0.18em] opacity-30">
+          PIXGAME
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-gray-500">
+        <div>© 2026 PIxGame Portal. All rights reserved.</div>
+        <div>Powered by HTML5 & Yandex Games Instant Launch.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
